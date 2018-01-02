@@ -15,5 +15,14 @@
   "bugs": {
     "url": "https://github.com/MJunaidK/AngularBreadcrumb/issues"
   },
-  "homepage": "https://github.com/MJunaidK/AngularBreadcrumb#readme"
+  "homepage": "https://github.com/MJunaidK/AngularBreadcrumb#readme",
+  "dependencies": {
+    "angular": "^1.6.8",
+    "angular-route": "^1.6.8"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.23.2",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1"
+  }
 }
