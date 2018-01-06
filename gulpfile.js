@@ -23,6 +23,7 @@ gulp.task('css',function(){
 		}));
 });
 
+//This task is not needed as browserify will bundle all javasript into one bundle file
 gulp.task('js',function(){
 	gulp.src(scripts)
 		.pipe(concat('scripts.js'))
