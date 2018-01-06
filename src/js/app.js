@@ -30,51 +30,11 @@ angular.module('app',["ui.router","ui.bootstrap","ncy-angular-breadcrumb"]) //ui
 		}
 	}
 })
-.controller('RoomListCtrl',function($scope,rooms){
-	$scope.rooms=rooms;
-})
-.controller('RoomDetailCtrl',function($scope,$state,$stateParams,rooms){
-	$state.rooms=rooms;
-	if($stateParams.roomId){
-		$scope.room=_.findWhere(rooms,{roomId:parseInt($stateParams.roomId)});
-		if($scope.room){
-			$scope.model =angular.copy($scope.room);              
-		}else{
-			$state.go('^');
-		}
-	}
-	
-	$scope.save = function(){
-		if($scope.model.roomId){
-			angular.extend($scope.room,$scope.model);
-		}else{
-			var ids=_.map(rooms,function(room){
-				return room.roomId;
-			})
-			$scope.model.roomId=_.max(ids)+1;
-			rooms.push($scope.model);
-		}
-		$state.go('^');
-	}
-})
 .controller('BookingListCtrl',function($scope,$rootScope,$state,dateUtils,reservations){
 	$scope.reservations=reservations;
 	$scope.navDate=function(){
 		$state.go('booking.day',{year:'2018',month:'1',day:'13'});
 	}
-})
-.controller('BookingDayCtrl',function($scope,$rootScope,$state,$stateParams,rooms){
-	$rootScope.reservationDate= new Date($stateParams.year,$stateParams.month-1,$stateParams.day);
-	
-	
-})
-.controller('BookingDetailCtrl',function($scope,$stateParams,dateUtils,reservations,rooms){
-	$scope.addDays=dateUtils.addDays;
-	$scope.reservation=_.findWhere(reservations,{reservationId:parseInt($stateParams.reservationId)});
-//	$scope.room=_.findWhere(rooms,{roomId:parseInt($scope.reservation.roomId)});
-	$scope.dismiss=function(){
-		$scope.$dismiss();
-	};
 })
 .config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
 	$stateProvider.state('home',{

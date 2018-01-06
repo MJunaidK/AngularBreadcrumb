@@ -35510,51 +35510,11 @@ angular.module('app',["ui.router","ui.bootstrap","ncy-angular-breadcrumb"]) //ui
 		}
 	}
 })
-.controller('RoomListCtrl',function($scope,rooms){
-	$scope.rooms=rooms;
-})
-.controller('RoomDetailCtrl',function($scope,$state,$stateParams,rooms){
-	$state.rooms=rooms;
-	if($stateParams.roomId){
-		$scope.room=_.findWhere(rooms,{roomId:parseInt($stateParams.roomId)});
-		if($scope.room){
-			$scope.model =angular.copy($scope.room);              
-		}else{
-			$state.go('^');
-		}
-	}
-	
-	$scope.save = function(){
-		if($scope.model.roomId){
-			angular.extend($scope.room,$scope.model);
-		}else{
-			var ids=_.map(rooms,function(room){
-				return room.roomId;
-			})
-			$scope.model.roomId=_.max(ids)+1;
-			rooms.push($scope.model);
-		}
-		$state.go('^');
-	}
-})
 .controller('BookingListCtrl',function($scope,$rootScope,$state,dateUtils,reservations){
 	$scope.reservations=reservations;
 	$scope.navDate=function(){
 		$state.go('booking.day',{year:'2018',month:'1',day:'13'});
 	}
-})
-.controller('BookingDayCtrl',function($scope,$rootScope,$state,$stateParams,rooms){
-	$rootScope.reservationDate= new Date($stateParams.year,$stateParams.month-1,$stateParams.day);
-	
-	
-})
-.controller('BookingDetailCtrl',function($scope,$stateParams,dateUtils,reservations,rooms){
-	$scope.addDays=dateUtils.addDays;
-	$scope.reservation=_.findWhere(reservations,{reservationId:parseInt($stateParams.reservationId)});
-//	$scope.room=_.findWhere(rooms,{roomId:parseInt($scope.reservation.roomId)});
-	$scope.dismiss=function(){
-		$scope.$dismiss();
-	};
 })
 .config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
 	$stateProvider.state('home',{
@@ -35665,3 +35625,80 @@ angular.module('app',["ui.router","ui.bootstrap","ncy-angular-breadcrumb"]) //ui
 	$urlRouterProvider.otherwise('/home');
 	}
 ]);
+angular.module('app')
+.controller('BookingDayCtrl',function($scope,$rootScope,$state,$stateParams,rooms){
+	$rootScope.reservationDate= new Date($stateParams.year,$stateParams.month-1,$stateParams.day);
+	   if(!$scope.between($rootScope.reservationDate).length) {
+	        $state.go('^');
+	    }
+
+	    $scope.getRoom = function(id) {
+	        return _.findWhere(rooms, {roomId: parseInt(id)});
+	    }
+	
+})
+angular.module('app')
+.controller('BookingDetailCtrl',function($scope,$stateParams,dateUtils,reservations,rooms){
+	$scope.addDays=dateUtils.addDays;
+	$scope.reservation=_.findWhere(reservations,{reservationId:parseInt($stateParams.reservationId)});
+//	$scope.room=_.findWhere(rooms,{roomId:parseInt($scope.reservation.roomId)});
+	$scope.dismiss=function(){
+		$scope.$dismiss();
+	};
+})
+angular.module('app')
+.controller('BookingListCtrl',function($scope,$rootScope,$state,dateUtils,reservations){
+	$scope.reservations=reservations;
+	$scope.navDate=function(){
+		$state.go('booking.day',{year:'2018',month:'1',day:'13'});
+	}
+	
+	 $scope.$watch('reservationDate', function(newValue, oldValue) {
+	        $scope.dpModel = $rootScope.reservationDate;
+	    });
+
+
+	    $scope.$watch('dpModel', function(newValue, oldValue) {
+	      if(newValue && !angular.equals(newValue, oldValue)) {
+	        $state.go('booking.day', {year: newValue.getFullYear(), month: newValue.getMonth() + 1, day: newValue.getDate()});
+	      }
+	    });
+
+	    $scope.between = function(date) {
+	      return _.filter($scope.reservations, function(reservation) {
+	        var from = reservation.from;
+	        var to = dateUtils.addDays(reservation.nights, reservation.from);
+	        return from <= date && date < to;
+	      });
+	    };
+})
+
+angular.module('app')
+.controller('RoomDetailCtrl',function($scope,$state,$stateParams,rooms){
+	$state.rooms=rooms;
+	if($stateParams.roomId){
+		$scope.room=_.findWhere(rooms,{roomId:parseInt($stateParams.roomId)});
+		if($scope.room){
+			$scope.model =angular.copy($scope.room);              
+		}else{
+			$state.go('^');
+		}
+	}
+	
+	$scope.save = function(){
+		if($scope.model.roomId){
+			angular.extend($scope.room,$scope.model);
+		}else{
+			var ids=_.map(rooms,function(room){
+				return room.roomId;
+			})
+			$scope.model.roomId=_.max(ids)+1;
+			rooms.push($scope.model);
+		}
+		$state.go('^');
+	}
+})
+angular.module('app')
+.controller('RoomListCtrl',function($scope,rooms){
+	$scope.rooms=rooms;
+})

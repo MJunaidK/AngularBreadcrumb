@@ -63,7 +63,7 @@ gulp.task('browser-sync',function(){
 // Browserify helps you to bring node modules to browser.
 //First of all you need to set browserify to generate source maps by setting the debug option to true, then if you want the pre babelify source maps you need to configure babelify to generate source maps
 gulp.task('browserify',function(){
-	return browserify('src/app.js',{
+	return browserify('src/js/app.js',{
 		debug:true,
 		paths:['./node_modules','./src']
 	}).transform("babelify",{presets:["es2015"]})
