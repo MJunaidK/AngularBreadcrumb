@@ -4,9 +4,21 @@
 <meta charset="ISO-8859-1">
 <title>Angular Tutorial</title>
 <link href="css/main.css" rel="stylesheet">
-</head>
-<body>
-<ng-view class="view"></ng-view>
-</body>
 <script type="text/javascript" src="js/scripts.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-breadcrumb/0.5.0/angular-breadcrumb.js"></script>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.js"></script>
+ <script type="text/javascript" src=bundle1.js"></script>
+ </head>
+<body>
+<div>
+	<a class="brand" ui-sref="home">angular-breadcrumb</a>
+	<a ui-sref="sample">Sample</a>
+	
+	<div ncy-breadcrumb></div>
+	<div ui-view></div> 
+</div>
+</body>
+
 </html>
